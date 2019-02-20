@@ -1,0 +1,42 @@
+                        ============================
+                        Super Sampling Anti Aliasing
+                        ============================
+
+
+    The goal of this project is to use threads offered by the pthread
+library and to make a real-life application with them.
+    When an image is rendered, the aliasing effect may appear. This effect is
+the easiest visible for lines or fonts, these have a pixel look. A common
+technique to hide this effect is to render the image at a high resolution then
+shrink it to the desired resolution using an approximation. For SSAA, each pixel
+in the final image represents multiple pixels in the original image (one square
+with pixel resize factor side). In this way, the output image will be by
+resize factor smaller than the original image. There are two ways to shrink
+an image:
+• If the resize factor is even, it will calculate the pixel value in the reduced
+image as the average of resize factor ^ 2 pixels in the original picture.
+• If the resize factor is 3, the pixel value in the reduced image will be
+calculated by multiplying the values of the original 9-pixel submatrix, with the
+Gaussian Kernel values ​​(also a 3x3 array elements), making the sum of the
+resulting elements and dividing the result to 16 (the sum of the Gaussian kernel
+elements).
+In project testing, 3 will be the only odd value of the resize factor.
+The image can be color (RGB with an unsigned value, one byte, for each channel)
+or grayscale (each pixel given as a value between 0 and 255). If the image is
+color, the calculations will be done for each separate color.
+
+Implementation details:
+  In the image type structure, the image type (P5 or P6) is stored,
+width and length of the picture, maximum pixel value, and 2 matrices
+of type unsigned char or pixel (structure containing RGB fields).
+  The readInput function reads input data and assigns
+memory for data. Depending on the type of image, one matrix is instantiated and
+used.
+  The writeData function writes the new resized image in the file received as
+a parameter and deallocates the memory used for the program.
+  The resize function instantiates the threads, allocates memory for the new
+image (out).
+
+Usage:
+your@Desktop$ make
+your@Desktop$ ./antialiasing inputImageName outputImageName resizeFactor numberOfThreads
